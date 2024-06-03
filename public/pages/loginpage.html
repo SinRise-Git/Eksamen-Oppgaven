@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">
+        <div class="navBar">
+            <div>
+                <h1>Solcellespesialisten</h1>
+            </div>
+            <div class="options">
+                <div>
+                    <a href="/home">Home</a>
+                </div>
+                <div>
+                    <a href="/news">News</a>
+                </div>
+            </div>
+            <div class="user">
+                <a href="/login">Login</a>
+            </div>
+        </div>
+        <div class="content">
+            <div class="pages">
+                <div class="login">
+                    <div class="leftpage">
+                        <form id="loginform">
+                            <h2>Login</h2>
+                            <div>
+                                <input type="text" id="loginEmail">
+                                <label for="loginEmail">Email</label>
+                            </div>
+                            <div>
+                                <input type="password" id="loginPassword">
+                                <label for="loginPassword">Password</label>
+                            </div>
+                            <div class="button">
+                                <button type="submit">Login</button>
+                            </div>
+                            <p class="responseMessage login" id=""></p>
+                        </form>
+                        <p>Har du en ikke bruker?<button class="changeForm">Signup</button></p>
+                    </div>
+                </div>
+                <div class="signup" style="display: none;">
+                    <div class="leftpage">
+                        <form id="signupform">
+                            <h2>Signup</h2>
+                            <div>
+                                <input type="text" id="signupUsername">
+                                <label for="signupUsername">Username</label>
+                            </div>
+                            <div>
+                                <input type="text" id="signupEmail">
+                                <label for="signupEmail">Email</label>
+                            </div>
+                            <div>
+                                <input type="password" id="signupPassword">
+                                <label for="signupPassword">Password</label>
+                            </div>
+                            <div>
+                                <select id="signupRole"></select>
+                                <label for="signupRole">Pick Role</label>
+                            </div>
+                            <div class="button">
+                                <button type="submit">Signup</button>
+                            </div>
+                            <p class="responseMessage signup" id=""></p>
+                        </form> 
+                        <p>Har du en bruker?<button class="changeForm">Login</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/javascript/loginScript.js"></script>
+<script src="/javascript/commonScript.js"></script>
+</html>
