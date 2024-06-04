@@ -14,11 +14,19 @@ app.use(session({
     saveUninitialized: false
 }))
 
-function checkAuthorization(allowedRole) {
+function checkIfLogin() {
     return function(req, res, next) {
-        console.log(req.session.isLoggedIn)
         if (req.session.isLoggedIn === undefined || !req.session.isLoggedIn.status) {
             return res.redirect('/login');
+        }
+        next();
+    };
+}
+
+function checkIfAdmin() {
+    return function(req, res, next) {
+        if (!req.session.isLoggedIn.role === "Administrator") {
+            return res.send({valid: false, message: "Your not a adminstrator"});
         }
         next();
     };
@@ -104,10 +112,30 @@ app.post("/checkLogin", async (req, res) => {
     if (!validationResult.valid){
         res.status(400).send({valid: false, message: validationResult.message});
     } else {
-        const data = db.prepare("SELECT * FROM users WHERE email = ?").get(requestData.email);
-        req.session.isLoggedIn = {status: true, id: data.ID, name: data.Name, email: data.Email, role: data.Role};
+        const data = db.prepare(`
+        SELECT users.*, roler.name as roleName FROM users 
+        INNER JOIN roler ON users.Role = roler.ID
+        WHERE email = ?`).get(requestData.email);
+        console.log(data);
+        req.session.isLoggedIn = {status: true, id: data.ID, name: data.Name, email: data.Email, role: data.roleName};
         res.status(200).send({valid: true, message: "Login successfull"});
     }
+})
+
+app.get("/getUsersVerify" , (req, res) => {
+    const users = db.prepare(`
+    SELECT users.Name, users.Email, roler.name as roleName FROM users 
+    INNER JOIN roler ON users.role = roler.ID
+    WHERE Status = ?`).all("false")
+    res.send(users);
+})
+
+app.get("/getSavedArticles" , (req, res) => {
+    const users = db.prepare(`
+    SELECT savedArticles.User, articles.name FROM savedArticles 
+    INNER JOIN articles ON savedArticles.Article = articles.ID
+    WHERE User = ?`).all(req.session.isLoggedIn.id)
+    res.send(users);
 })
 
 app.get("/getRole", (req, res) => {
@@ -131,17 +159,21 @@ app.get("/logout", (req, res) => {
 app.get(["/", "/login"], (req, res) => {
     res.sendFile(path.join(staticPath, "pages/loginpage.html"));
 })
-
 app.get("/home", (req, res) => {
     res.sendFile(path.join(staticPath, "pages/homepage.html"));
 })
-app.get("/news", (req, res) => {
-    res.sendFile(path.join(staticPath, "pages/newspage.html"));
+app.get("/articles", (req, res) => {
+    res.sendFile(path.join(staticPath, "pages/articlespage.html"));
 })
 
-app.get("/profile", checkAuthorization(), (req, res) => {
-    res.sendFile(path.join(staticPath, "pages/profilepage.html"));
+app.get("/profile", checkIfLogin(), (req, res) => {
+    if(req.session.isLoggedIn.role === "Administrator"){
+        res.sendFile(path.join(staticPath, "pages/adminpage.html"));
+    } else{
+        res.sendFile(path.join(staticPath, "pages/profilepage.html"));
+    }
 })
+
 app.listen(port, () => {
     console.log(`Server is running on localhost:${port}`);
 });
