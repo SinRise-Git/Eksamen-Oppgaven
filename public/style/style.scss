@@ -136,7 +136,7 @@ body{
             }
         }
     }
-    .articalPage{
+    .articlePage{
         h1{
             text-align: center;
         }
@@ -185,6 +185,14 @@ body{
                     }
                 }
             }
+        }
+    }
+    .articelsReadPage{
+        display: flex;
+        justify-content: center;
+        .articles{
+            max-width: 650px;
+
         }
     }
 }

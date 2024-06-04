@@ -13,7 +13,7 @@ document.getElementById("articleForm").addEventListener("submit", async function
         },
         body: JSON.stringify(requestData)
     }
-    const response = await fetch("/createArticle", requestOption);
+    const response = await fetch("/articles/createArticle", requestOption);
     const data = await response.json();
     if(data.valid){
         window.location.href = "/articles";

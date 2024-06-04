@@ -124,19 +124,19 @@ body {
   width: 400px;
   height: 400px;
 }
-.main .articalPage h1 {
+.main .articlePage h1 {
   text-align: center;
 }
-.main .articalPage div {
+.main .articlePage div {
   margin-top: 10px;
 }
-.main .articalPage div .filters, .main .articalPage div .button {
+.main .articlePage div .filters, .main .articlePage div .button {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
 }
-.main .articalPage div .articles {
+.main .articlePage div .articles {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,22 +144,22 @@ body {
   color: white;
   gap: 20px;
 }
-.main .articalPage div .articles .article {
+.main .articlePage div .articles .article {
   background-color: #F9E076;
   padding: 20px;
   max-width: 300px;
   overflow: hidden;
   border-radius: 5px;
 }
-.main .articalPage div .articles .article p {
+.main .articlePage div .articles .article p {
   max-height: 100px;
   overflow: auto;
   border-radius: 5px;
 }
-.main .articalPage div .articles .article div p {
+.main .articlePage div .articles .article div p {
   font-weight: 600;
 }
-.main .articalPage div .articles .article div button {
+.main .articlePage div .articles .article div button {
   border: 0px;
   text-decoration: underline;
   color: white;
@@ -169,6 +169,13 @@ body {
   margin-right: 10px;
   border-radius: 5px;
   font-size: 15px;
+}
+.main .articelsReadPage {
+  display: flex;
+  justify-content: center;
+}
+.main .articelsReadPage .articles {
+  max-width: 650px;
 }
 
 /*# sourceMappingURL=style.css.map */

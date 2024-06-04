@@ -12,16 +12,23 @@ async function canCreateArtical(){
 }
 
 async function getArticles(){
-    const getArticles = await fetch("/getArticles");
-    const response = await getArticles.json();
+    let isArticleSaved = false
+    const getArticles = await fetch("/articles/getArticles");
+    const getSavedArticles = await fetch("/getSavedArticles");
+    const responseGetArticles = await getArticles.json();
+    const responseGetSavedArticles = await getSavedArticles.json();
     const articleDiv = document.getElementsByClassName("articles")[0];
     const search = document.getElementById("searchArticles").value;
     articleDiv.innerHTML = "";
-    if(response.length > 0){
-        response.forEach(article => {
+    if(responseGetArticles.length > 0){
+        responseGetArticles.forEach(article => {
             if(article.Name.toLowerCase().includes(search.toLowerCase())){
                 const div = document.createElement("div");
                 div.className = "article";
+                if(responseGetSavedArticles.valid !== false){
+                    isArticleSaved = responseGetSavedArticles.some(savedArticle => savedArticle.UUID === article.UUID);
+                }
+                const favoriteButtonText = isArticleSaved ? "Unfavorite" : "Favorite";
                 div.innerHTML = `
                 <h2>${article.Name}</h2>
                 <p>${article.Description}</p>
@@ -32,7 +39,7 @@ async function getArticles(){
                 </div>
                 <div>
                 <button onclick="location.href='/articles/read/${article.UUID}';"">Read more</button>
-                <button>Favorite</button>
+                <button onclick="saveArticle('${article.UUID}')">${favoriteButtonText}</button>
                 </div>
                 `;
                 articleDiv.appendChild(div);
@@ -40,7 +47,17 @@ async function getArticles(){
         })
     }
 }
-document.getElementById("searchArticles").addEventListener("input", getArticles());
 
+async function saveArticle(uuid){
+    const saveArticle = await fetch(`/articles/saveArticle/${uuid}`);
+    const response = await saveArticle.json();
+    if(response.valid){
+        getArticles();
+    } else{
+        window.location.href = "/login";
+    }
+}
+
+document.getElementById("searchArticles").addEventListener("input", getArticles);
 getArticles()
 canCreateArtical();

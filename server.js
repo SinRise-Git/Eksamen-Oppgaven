@@ -125,15 +125,16 @@ app.get("/getAllUsers", checkLogin("Administrator"), (req, res) => {
     res.send(users);
 })
 
-app.get("/getSavedArticles", checkLogin, (req, res) => {
+app.get("/getSavedArticles", checkLogin(["Administrator", "Salg", "Montering", "Kunde"]), (req, res) => {
     const articles = db.prepare(`
-    SELECT savedArticles.User, articles.name FROM savedArticles 
+    SELECT savedArticles.User, articles.name, articles.date, articles.UUID, users.Name as Owner FROM savedArticles 
     INNER JOIN articles ON savedArticles.Article = articles.ID
+    INNER JOIN users ON savedArticles.User = users.ID
     WHERE User = ?`).all(req.session.isLoggedIn.id)
     res.send(articles);
 })
 
-app.get("/getArticles", (req, res) => {
+app.get("/articles/getArticles", (req, res) => {
     const articles = db.prepare(`
     SELECT articles.UUID, articles.Name, articles.Description, articles.Content, articles.Date, users.Name as Owner FROM articles
     INNER JOIN users ON articles.Owner = users.ID
@@ -141,13 +142,41 @@ app.get("/getArticles", (req, res) => {
     res.send(articles);
 })
 
-app.post("/createArticle", checkLogin(["Administrator", "Salg", "Montering"]), (req, res) => {
+app.post("/articles/createArticle", checkLogin(["Administrator", "Salg", "Montering"]), (req, res) => {
     const requestData = req.body;
     const uuid = genorateUUID("articles");
     const currentDate = new Date();
     const correctDate = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
     db.prepare("INSERT INTO articles (Name, Description, Content, Date, Owner, UUID) VALUES (?, ?, ?, ?, ?, ?)").run(requestData.title, requestData.description, requestData.content, correctDate, req.session.isLoggedIn.id, uuid);
     res.send({valid: true});
+})
+
+app.get("/articles/getArticleInformation/:uuid", (req, res) => {
+    const uuid = req.params.uuid;
+    const article = db.prepare(`
+    SELECT articles.Name, articles.Description, articles.Content, articles.Date, users.Name as Owner FROM articles
+    INNER JOIN users ON articles.Owner = users.ID
+    WHERE articles.UUID = ?`).get(uuid);
+    res.send(article);
+})
+
+app.get("/articles/deleteArticle/:uuid", checkLogin(["Administrator", "Salg", "Montering"]), (req, res) => {
+    const uuid = req.params.uuid;
+    db.prepare("DELETE FROM articles WHERE UUID = ?").run(uuid);
+    res.send({valid: true});
+})
+
+app.get("/articles/saveArticle/:uuid", checkLogin(["Administrator", "Salg", "Montering", "Kunde"]), (req, res) => {
+    const uuid = req.params.uuid;
+    const articleID = db.prepare("SELECT ID FROM articles WHERE UUID = ?").get(uuid);
+    const doesExist = db.prepare("SELECT * FROM savedArticles WHERE User = ? AND Article = ?").get(req.session.isLoggedIn.id, articleID.ID);
+    if(!doesExist) {
+        db.prepare("INSERT INTO savedArticles (User, Article) VALUES (?, ?)").run(req.session.isLoggedIn.id, articleID.ID);
+        res.send({valid: true});
+    } else {
+        db.prepare("DELETE FROM savedArticles WHERE User = ? AND Article = ?").run(req.session.isLoggedIn.id, articleID.ID);
+        res.send({valid: true});
+    }
 })
 
 app.get("/deleteUser/:uuid", checkLogin(["Administrator"]), (req, res) => {

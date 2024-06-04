@@ -56,14 +56,26 @@ document.getElementById("logoutButton").addEventListener("click", async function
 async function getSavedArticles(){
     const getSavedArticles = await fetch("/getSavedArticles");
     const response = await getSavedArticles.json();
-    const savedArticlesDiv = document.getElementsByClassName("savedArticles")[0];
-    if(response.length > 0){
-        console.log("Saved articles")
-    } else {
-        console.log("No saved articles")
-        savedArticlesDiv.innerHTML = "<h2>No saved articles</h2>";
-    }
+    const table = document.getElementById("articalTable");
+    response.forEach(article => {
+        const div = `
+        <tr>
+        <td>${article.Name}</td>
+        <td>${article.Owner}</td>
+        <td>${article.Date}</td>
+        <td><button onclick="location.href='/articles/read/${article.UUID}'">Read</button></td>
+        <td><button onclick="saveArticle('${article.UUID}')">Unfavorite</button></td>
+        </tr>`;
+        table.innerHTML += div;
+    })
 }
 
+async function saveArticle(uuid){
+    const saveArticle = await fetch(`/articles/saveArticle/${uuid}`);
+    const response = await saveArticle.json();
+    if(response.valid){
+        location.reload();
+    }
+}
 getSavedArticles();
 displayProfile();
