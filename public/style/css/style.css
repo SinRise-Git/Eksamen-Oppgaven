@@ -1,3 +1,174 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Roboto", sans-serif;
+  background-color: white;
+}
 
+.main {
+  margin: 0px;
+}
+.main .navBar {
+  background-color: #F9E076;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 30px 10px 30px;
+}
+.main .navBar .options {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.main .navBar .options div a {
+  text-decoration: underline;
+  color: white;
+  font-size: 20px;
+}
+.main .navBar div h1 {
+  margin: 0px;
+}
+.main .content .pages {
+  display: flex;
+  justify-content: center;
+}
+.main .content .pages .leftpage, .main .content .pages .rigthpage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #F9E076;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 40px;
+}
+.main .content .pages .leftpage form h2, .main .content .pages .rigthpage form h2 {
+  font-size: 40px;
+  margin: 10px 0px 10px 0px;
+}
+.main .content .pages .leftpage form div, .main .content .pages .rigthpage form div {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0px 5px 0px;
+}
+.main .content .pages .leftpage form div label, .main .content .pages .rigthpage form div label {
+  font-size: 20px;
+  margin: 5px 0px 5px 0px;
+  font-weight: bold;
+}
+.main .content .pages .leftpage form div input, .main .content .pages .leftpage form div select, .main .content .pages .rigthpage form div input, .main .content .pages .rigthpage form div select {
+  font-size: 20px;
+  padding: 5px;
+  border: 0px;
+  border-radius: 5px;
+}
+.main .content .pages .leftpage form div button, .main .content .pages .rigthpage form div button {
+  border: 0px;
+  color: black;
+  background-color: white;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 5px;
+  margin-top: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.main .content .pages .leftpage p, .main .content .pages .rigthpage p {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 5px 0px 5px 0px;
+  text-align: center;
+}
+.main .content .pages .leftpage button, .main .content .pages .rigthpage button {
+  border: 0px;
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+  color: white;
+}
+.main .articlePageCreateEdit div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.main .articlePageCreateEdit div h1 {
+  margin: 5px;
+}
+.main .articlePageCreateEdit div div form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.main .articlePageCreateEdit div div form div {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px 10px 0px;
+}
+.main .articlePageCreateEdit div div form div input {
+  padding: 10px;
+  border-radius: 5px;
+}
+.main .articlePageCreateEdit div div form div textarea {
+  padding: 10px;
+  border-radius: 5px;
+  resize: none;
+}
+.main .articlePageCreateEdit div div form div #description {
+  width: 300px;
+  height: 75px;
+}
+.main .articlePageCreateEdit div div form div #content {
+  width: 400px;
+  height: 400px;
+}
+.main .articalPage h1 {
+  text-align: center;
+}
+.main .articalPage div {
+  margin-top: 10px;
+}
+.main .articalPage div .filters, .main .articalPage div .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.main .articalPage div .articles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: white;
+  gap: 20px;
+}
+.main .articalPage div .articles .article {
+  background-color: #F9E076;
+  padding: 20px;
+  max-width: 300px;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.main .articalPage div .articles .article p {
+  max-height: 100px;
+  overflow: auto;
+  border-radius: 5px;
+}
+.main .articalPage div .articles .article div p {
+  font-weight: 600;
+}
+.main .articalPage div .articles .article div button {
+  border: 0px;
+  text-decoration: underline;
+  color: white;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0px;
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 15px;
+}
 
 /*# sourceMappingURL=style.css.map */

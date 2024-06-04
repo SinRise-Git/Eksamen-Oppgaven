@@ -14,24 +14,19 @@ app.use(session({
     saveUninitialized: false
 }))
 
-function checkIfLogin() {
+function checkLogin(role) {
     return function(req, res, next) {
+        if(role){
+            if (!role.includes(req.session.isLoggedIn === undefined || req.session.isLoggedIn.role)) {
+                return res.send({valid: false, message: "You don't have the required role to do this action!"});
+            }
+        }
         if (req.session.isLoggedIn === undefined || !req.session.isLoggedIn.status) {
             return res.redirect('/login');
         }
         next();
     };
 }
-
-function checkIfAdmin() {
-    return function(req, res, next) {
-        if (!req.session.isLoggedIn.role === "Administrator") {
-            return res.send({valid: false, message: "Your not a adminstrator"});
-        }
-        next();
-    };
-}
-
 const db = sqlite3("./database.db", { verbose: console.log })
 const staticPath = path.join(__dirname, "public");
 const port = process.env.PORT || 3000;
@@ -83,9 +78,9 @@ async function validateRequestDataLogin(requestData) {
     return { valid: true }
 }
 
-function genorateUUID(){
+function genorateUUID(table){
     const uniqueID = uuid.v4();
-    const doesExist = db.prepare("SELECT uuid FROM users WHERE uuid = ?").get(uniqueID);
+    const doesExist = db.prepare(`SELECT uuid FROM ${table} WHERE uuid = ?`).get(uniqueID);
     if(doesExist){
        return genorateUUID(); 
     }
@@ -98,7 +93,7 @@ app.post("/createAccount", async (req, res)  => {
     if (!validationResult.valid) {
         res.status(400).send({valid: validationResult.valid, message: validationResult.message});
     } else {
-        const uuid = genorateUUID()
+        const uuid = genorateUUID("users")
         const status = requestData.role === "1" ? "valid" : "false";
         const hashPassword =  await bcrypt.hash(requestData.password, parseInt(process.env.SALT_ROUNDS))
         db.prepare("INSERT INTO users (Name, Email, Password, Role, Status, UUID) VALUES (?, ?, ?, ?, ?, ?)").run(requestData.username, requestData.email, hashPassword, requestData.role, status, uuid);
@@ -122,21 +117,51 @@ app.post("/checkLogin", async (req, res) => {
     }
 })
 
-app.get("/getUsersVerify" , (req, res) => {
+app.get("/getAllUsers", checkLogin("Administrator"), (req, res) => {
     const users = db.prepare(`
-    SELECT users.Name, users.Email, roler.name as roleName FROM users 
+    SELECT users.UUID, users.Name, users.Email, users.status, roler.name as roleName FROM users 
     INNER JOIN roler ON users.role = roler.ID
-    WHERE Status = ?`).all("false")
+    WHERE users.ID != ?`).all(req.session.isLoggedIn.id)
     res.send(users);
 })
 
-app.get("/getSavedArticles" , (req, res) => {
-    const users = db.prepare(`
+app.get("/getSavedArticles", checkLogin, (req, res) => {
+    const articles = db.prepare(`
     SELECT savedArticles.User, articles.name FROM savedArticles 
     INNER JOIN articles ON savedArticles.Article = articles.ID
     WHERE User = ?`).all(req.session.isLoggedIn.id)
-    res.send(users);
+    res.send(articles);
 })
+
+app.get("/getArticles", (req, res) => {
+    const articles = db.prepare(`
+    SELECT articles.UUID, articles.Name, articles.Description, articles.Content, articles.Date, users.Name as Owner FROM articles
+    INNER JOIN users ON articles.Owner = users.ID
+    `).all();
+    res.send(articles);
+})
+
+app.post("/createArticle", checkLogin(["Administrator", "Salg", "Montering"]), (req, res) => {
+    const requestData = req.body;
+    const uuid = genorateUUID("articles");
+    const currentDate = new Date();
+    const correctDate = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
+    db.prepare("INSERT INTO articles (Name, Description, Content, Date, Owner, UUID) VALUES (?, ?, ?, ?, ?, ?)").run(requestData.title, requestData.description, requestData.content, correctDate, req.session.isLoggedIn.id, uuid);
+    res.send({valid: true});
+})
+
+app.get("/deleteUser/:uuid", checkLogin(["Administrator"]), (req, res) => {
+    const uuid = req.params.uuid;
+    db.prepare("DELETE FROM users WHERE UUID = ?").run(uuid);
+    res.send({valid: true});
+})
+
+app.get("/activateUser/:uuid", checkLogin(["Administrator"]), (req, res) => {
+    const uuid = req.params.uuid;
+    db.prepare("UPDATE users SET Status = ? WHERE UUID = ?").run("valid", uuid);
+    res.send({valid: true});
+})
+
 
 app.get("/getRole", (req, res) => {
     const role = db.prepare("SELECT * FROM roler WHERE ID != ?").all(4);
@@ -166,7 +191,15 @@ app.get("/articles", (req, res) => {
     res.sendFile(path.join(staticPath, "pages/articlespage.html"));
 })
 
-app.get("/profile", checkIfLogin(), (req, res) => {
+app.get(["/articles/create"], checkLogin(["Administrator", "Salg", "Montering"]), (req, res) => {
+    res.sendFile(path.join(staticPath, "pages/editCreateArticlepage.html"));
+})
+
+app.get("/articles/read/:uuid", (req, res) => {
+    res.sendFile(path.join(staticPath, "pages/readArticlepage.html"));
+})
+
+app.get("/profile", checkLogin(), (req, res) => {
     if(req.session.isLoggedIn.role === "Administrator"){
         res.sendFile(path.join(staticPath, "pages/adminpage.html"));
     } else{

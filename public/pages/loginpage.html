@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/style/css/style.css">
 </head>
 <body>
     <div class="main">
@@ -18,9 +19,9 @@
                 <div>
                     <a href="/Articles">Articles</a>
                 </div>
-            </div>
-            <div class="user">
-                <a href="/login">Login</a>
+                <div class="user">
+                    <a href="/login">Login</a>
+                </div>
             </div>
         </div>
         <div class="content">
@@ -30,12 +31,12 @@
                         <form id="loginform">
                             <h2>Login</h2>
                             <div>
-                                <input type="text" id="loginEmail">
-                                <label for="loginEmail">Email</label>
+                                <label for="loginEmail">Email:</label>
+                                <input type="text" id="loginEmail" placeholder="Email">
                             </div>
                             <div>
-                                <input type="password" id="loginPassword">
-                                <label for="loginPassword">Password</label>
+                                <label for="loginPassword">Password:</label>
+                                <input type="password" id="loginPassword" placeholder="Password">
                             </div>
                             <div class="button">
                                 <button type="submit">Login</button>
@@ -50,20 +51,20 @@
                         <form id="signupform">
                             <h2>Signup</h2>
                             <div>
-                                <input type="text" id="signupUsername">
                                 <label for="signupUsername">Username</label>
+                                <input type="text" id="signupUsername" placeholder="Username">
                             </div>
                             <div>
-                                <input type="text" id="signupEmail">
-                                <label for="signupEmail">Email</label>
+                                <label for="signupUsername">Email</label>
+                                <input type="text" id="signupEmail" placeholder="Email">
                             </div>
                             <div>
-                                <input type="password" id="signupPassword">
                                 <label for="signupPassword">Password</label>
+                                <input type="password" id="signupPassword" placeholder="Password">
                             </div>
                             <div>
+                                <label for="signupRole">Velg Role:</label>
                                 <select id="signupRole"></select>
-                                <label for="signupRole">Pick Role</label>
                             </div>
                             <div class="button">
                                 <button type="submit">Signup</button>

@@ -1,0 +1,190 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+}
+
+
+.main{
+    margin: 0px;
+    .navBar{
+        background-color: #F9E076;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 30px 10px 30px;
+        .options{
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            div{
+                a{
+                    text-decoration: underline;
+                    color: white;
+                    font-size: 20px;
+                }
+            }
+        }
+        div{
+            h1{
+                margin: 0px;
+            }
+        }
+    }
+    .content{
+        .pages{
+            display: flex;
+            justify-content: center;
+            .leftpage, .rigthpage{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #F9E076;
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                margin-top: 40px;
+                form{
+                    h2{
+                        font-size: 40px;
+                        margin: 10px 0px 10px 0px;
+                    }
+                    div{
+                        display: flex;
+                        flex-direction: column;
+                        margin: 5px 0px 5px 0px;
+                        label{
+                            font-size: 20px;
+                            margin: 5px 0px 5px 0px;
+                            font-weight: bold;
+                        }
+                        input, select{
+                            font-size: 20px;
+                            padding: 5px;
+                            border: 0px;
+                            border-radius: 5px;
+                        }
+                        button{
+                            border: 0px;
+                            color: black;
+                            background-color: white;
+                            cursor: pointer;
+                            font-size: 20px;
+                            padding: 5px;
+                            margin-top: 5px;
+                            border-radius: 5px;
+                            text-decoration: none;
+                        }
+                    }
+                }
+                p{
+                    font-size: 15px;
+                    font-weight: bold;
+                    margin: 5px 0px 5px 0px;
+                    text-align: center;
+                }
+                button{
+                    border: 0px;
+                    background-color: transparent;
+                    font-size: 15px;
+                    font-weight: bold;
+                    text-decoration: underline;
+                    cursor: pointer;
+                    color: white
+                }
+            }
+        }
+    }
+    .articlePageCreateEdit{
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            h1{
+                margin: 5px;
+            }
+            div{
+                form{
+                    display: flex;
+                    align-items: center;
+                    flex-direction: column;
+                    div{
+                        display: flex;
+                        flex-direction: column;
+                        margin: 10px 0px 10px 0px;
+                        input{
+                            padding: 10px;
+                            border-radius: 5px;
+                        }
+                        textarea{
+                            padding: 10px;
+                            border-radius: 5px;
+                            resize: none;
+                        }
+                        #description{
+                            width: 300px;
+                            height: 75px;
+                        }
+                        #content{
+                            width: 400px;
+                            height: 400px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .articalPage{
+        h1{
+            text-align: center;
+        }
+        div{
+            margin-top: 10px;
+            .filters, .button{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+
+            }
+            .articles{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                color: white;
+                gap: 20px;
+                .article{
+                    background-color: #F9E076;
+                    padding: 20px;
+                    max-width: 300px;
+                    overflow: hidden;
+                    border-radius: 5px;
+                    p{
+                        max-height: 100px;
+                        overflow: auto;
+                        border-radius: 5px;
+                    }
+                    div{
+                        p{
+                            font-weight: 600;
+                        }
+                        button{
+                            border: 0px;
+                            text-decoration: underline;
+                            color: white;
+                            background-color: transparent;
+                            cursor: pointer;
+                            padding: 0px;
+                            margin-right: 10px;
+                            border-radius: 5px;
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

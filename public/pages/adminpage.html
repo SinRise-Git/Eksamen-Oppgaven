@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
+    <link rel="stylesheet" href="/style/css/style.css">
 </head>
 <body>
     <div class="main">
@@ -18,17 +19,34 @@
                 <div>
                     <a href="/articles">Articles</a>
                 </div>
-            </div>
-            <div class="user">
-                <a href="/login">Login</a>
+                <div class="user">
+                    <a href="/login">Login</a>
+                </div>
             </div>
         </div>
         <div class="content">
-            <h1>Profile</h1>
-            <div class="userInfo">
-
+            <div>
+                <div class="userInfo"></div>
+                <button id="logoutButton">Logout</button>
             </div>
-            <button id="logoutButton">Logout</button>
+            <div>
+                <h1>Saved Articles</h1>
+                <div class="savedArticles">
+    
+                </div>
+            </div>
+            <div>
+                <h1>Brukere</h1>
+                <table id="userTable">
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Delete</th>
+                    </tr>
+                  </table>
+            </div>
         </div>
     </div>
 </body>
